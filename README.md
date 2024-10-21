@@ -16,36 +16,75 @@ To use Advanced Encryption Standard (AES) Algorithm for a practical application 
 #include <stdio.h>
 #include <string.h>
 
-// XOR encryption function
-void xor_encrypt_decrypt(char *input, char *key) {
-    int input_len = strlen(input);
-    int key_len = strlen(key);
+// Function to perform a simple XOR-based encryption
+void encrypt(char *message, char *key, char *encryptedMessage, int messageLength) {
+    int keyLength = strlen(key);
 
-    for (int i = 0; i < input_len; i++) {
-        input[i] = input[i] ^ key[i % key_len]; // XOR encryption
+    for (int i = 0; i < messageLength; i++) {
+        // Encrypt by XORing message byte with key byte
+        encryptedMessage[i] = message[i] ^ key[i % keyLength];
     }
+    encryptedMessage[messageLength] = '\0';  // Null-terminate the encrypted message
+}
+
+// Function to perform decryption (XOR again with the same key)
+void decrypt(char *encryptedMessage, char *key, char *decryptedMessage, int messageLength) {
+    int keyLength = strlen(key);
+
+    for (int i = 0; i < messageLength; i++) {
+        // Decrypt by XORing encrypted byte with key byte
+        decryptedMessage[i] = encryptedMessage[i] ^ key[i % keyLength];
+    }
+    decryptedMessage[messageLength] = '\0';  // Null-terminate the decrypted message
 }
 
 int main() {
-    char hed[] = "DES";
-    char url[] = "Karthi";
-    char key[] = "secretkey"; // Simple key for XOR encryption
-    printf("DES Encryption and Decryption\n",hed);
-    printf("Original URL: %s\n", url);
+    char message[100];
+    char key[100];
+    
+    printf("\n      *****Simulation of DES encryption and decryption*****\n\n");
+    // Get user input for the message
+    printf("Enter the message to encrypt: ");
+    fgets(message, sizeof(message), stdin);
+    message[strcspn(message, "\n")] = '\0';  // Remove newline character if present
 
-    // Encrypt the URL
-    xor_encrypt_decrypt(url, key);
-    printf("Encrypted URL: %s\n", url);
+    // Get user input for the key
+    printf("Enter the encryption key: ");
+    fgets(key, sizeof(key), stdin);
+    key[strcspn(key, "\n")] = '\0';  // Remove newline character if present
 
-    // Decrypt the URL (since XOR is reversible using the same key)
-    xor_encrypt_decrypt(url, key);
-    printf("Decrypted URL: %s\n", url);
-
+    int messageLength = strlen(message);
+    
+    // Buffers to hold encrypted and decrypted messages
+    char encryptedMessage[100];
+    char decryptedMessage[100];
+    
+    // Encrypt the message
+    encrypt(message, key, encryptedMessage, messageLength);
+    printf("Original Message: %s\n", message);
+    printf("Encrypted Message: ");
+    
+    // Print encrypted message in hex format
+    for (int i = 0; i < messageLength; i++) {
+        printf("%02X ", (unsigned char)encryptedMessage[i]);
+    }
+    printf("\n");
+    
+    // Decrypt the message
+    decrypt(encryptedMessage, key, decryptedMessage, messageLength);
+    printf("Decrypted Message: %s\n", decryptedMessage);
+    
     return 0;
+}
+
+
+
+
 }
 ```
 ## OUTPUT:
-![Screenshot 2024-10-07 104206](https://github.com/user-attachments/assets/2da77f47-f436-4d7b-836e-ccaaeac547d7)
+![Screenshot 2024-10-21 085756](https://github.com/user-attachments/assets/aac85ba1-3e87-48ad-8533-cb7a8b242f1d)
+
 
 ## RESULT: 
 Thus , to use Advanced Encryption Standard (AES) Algorithm for a practical application like URL Encryption is done successfully.
@@ -63,42 +102,64 @@ Thus , to use Advanced Encryption Standard (AES) Algorithm for a practical appli
   4. AES operates on a 4 × 4 column-major order array of bytes, termed the state
 
 ## PROGRAM: 
-```c
+```
 #include <stdio.h>
 #include <string.h>
-
-
-  void xor_encrypt_decrypt(char *input, char *key) {
-int input_len = strlen(input);
-int key_len = strlen(key);
-
-for (int i = 0; i < input_len; i++) {
-    input[i] = input[i] ^ key[i % key_len];
+void simpleAESEncrypt(char *plaintext, char *key, 
+char *ciphertext)
+{
+ int i;
+ for (i = 0; i < strlen(plaintext); i++) 
+ {
+ ciphertext[i] = plaintext[i] ^ key[i % 
+strlen(key)]; 
+ }
+ ciphertext[i] = '\0'; 
 }
+void simpleAESDecrypt(char *ciphertext, char *key, 
+char *decryptedText)
+{
+ int i;
+ for (i = 0; i < strlen(ciphertext); i++) 
+ {
+ decryptedText[i] = ciphertext[i] ^ key[i % 
+strlen(key)]; 
+ }
+ decryptedText[i] = '\0'; 
+}
+void printASCII(char *ciphertext) 
+{
+ printf("Encrypted Message (ASCII values): ");
+ for (int i = 0; i < strlen(ciphertext); i++) 
+ {
+ printf("%d ", (unsigned char)ciphertext[i]); 
+ }
+ printf("\n");
+}
+int main() 
+{
+ char plaintext[100], key[100], ciphertext[100], 
+decryptedText[100];
+ printf("Enter the plaintext: ");
+ scanf("%s", plaintext);
+ printf("Enter the key: ");
+ scanf("%s", key);
+ simpleAESEncrypt(plaintext, key, ciphertext);
+ printASCII(ciphertext); 
+ simpleAESDecrypt(ciphertext, key, 
+decryptedText);
+ printf("Decrypted Message: %s\n", 
+decryptedText);
+ return 0;
 }
 
-int main() {
-    printf("\n\n\n\n      ***** ADVANCED-ENCRYPTION-STANDARD-DES-ALGORITHM *****\n\n\n");
-    
-char url[] = "DINAGARAN JOHNY";
-char key[] = "secretkey"; 
-
-printf("Original text: %s\n", url);
-
-xor_encrypt_decrypt(url, key);
-printf("Encrypted text: %s\n", url);
-
-xor_encrypt_decrypt(url, key);
-printf("Decrypted text: %s\n", url);
-
-return 0;
-}
 ```
 
 
 ## OUTPUT:
 
-![WhatsApp Image 2024-10-16 at 14 10 16_58cd4e6f](https://github.com/user-attachments/assets/8b8b843d-ae00-4082-887c-8d8e86ca3a3c)
+![Screenshot 2024-10-21 091255](https://github.com/user-attachments/assets/2bb0db82-75ca-40b3-a98d-e9b38dc9850d)
+
 
 
 
